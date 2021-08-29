@@ -1,5 +1,3 @@
-/* This program prints strings */
-
 #include <stdio.h>
 int main()
 {
