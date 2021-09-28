@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 /**
- * File - Program that prints the name of the file its compiled from
+ * main - Program that prints the name of the file its compiled from
  *
- * Return - Always Success
+ * Return: Always 0.
  */
 int main(void)
 {
