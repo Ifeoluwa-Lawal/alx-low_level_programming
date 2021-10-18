@@ -1,40 +1,48 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include "main.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 /**
  * Filename - append_text_to_file
  *
- * Description - This function appends text to the end of a file. Just like 'echo'
+ * Description - function that creates a file and appends a string
  *
- * Return: Always 0
+ * Return: 1 on success or -1 if error
  */
-
 int append_text_to_file(const char *filename, char *text_content)
 {
-	int ID = 0, wr = 0, count = 0;
+	int fd, len;
+	int write_chars;
 
-	if (filename == NULL)
-	{
+	if (!filename)
 		return (-1);
-	}
-	if (text_content != NULL)
-	{
-		for (count = 0; text_content[count] != '\0'; count++)
-		{}
-	}
-	ID = open(filename, 0_APPEND | 0_WRONLY, 0600);
-	if (ID == -1)
-	{
+
+	fd = open(filename, O_WRONLY | O_APPEND);
+
+	if (fd < 0)
 		return (-1);
-	}
-	wr = write(ID, text_content, count);
-	if (wr == -1)
+
+	if (text_content == NULL)
 	{
-		return (-1);
+		write_chars = write(fd, "hola", 0);
+		close(fd);
+		if (write_chars == -1)
+			return (-1);
+		else
+			return (1);
 	}
-	close(ID);
+
+	for (len = 0; text_content[len]; len++)
+		;
+
+	write_chars = write(fd, text_content, len);
+
+	if (write_chars != len)
+		return (-1);
+
+	close(fd);
 	return (1);
 }

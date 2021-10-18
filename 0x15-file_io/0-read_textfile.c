@@ -1,52 +1,48 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include "main.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 /**
- * Filename: read_textfile
- * Description - This file reads a text file and prints it to the POSIX standard output
+ * Filename - read_textfile 
  *
- * Return: Always 0
+ * Description - function that reads from a file and prints to std output
+ *
+ * Return: the number of chars printed or 0 if error
  */
-
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int ID = 0;
-	ssize_t WR = 0;
-	ssize_t len = 0;
-	char *buff = NULL;
+	int fd;
+	ssize_t read_chars, write_chars;
+	char *buffer;
 
-	if (filename != NULL)
-	{
-		buff = malloc(letters);
-		if (buff == NULL)
-		{
-			return (0);
-		}
+	buffer = malloc(letters);
+	if (!buffer)
+		return (0);
 
-		ID = open(filename, 0_RDONLY, 0600);
-		if (ID == -1)
-		{
-			free(buff);
-			return (0);
-		}
-		len = read(ID, buff, letters);
-		if (len == -1)
-		{
-			free(buff);
-			return (0);
-		}
-		WR = write(STDOUT_FILENO, buff, len);
-		if (WR == -1 || WR < len)
-		{
-			free(buff);
-			return (0);
-		}
-		close(ID);
-		free(buff);
-		return (WR);
-	}
-	return (0);
+	if (!filename)
+		return (0);
+
+	fd = open(filename, O_RDONLY);
+
+	if (fd == -1)
+		return (0);
+
+	read_chars = read(fd, buffer, letters);
+
+	close(fd);
+
+	if (read_chars == -1)
+		return (0);
+
+	write_chars = write(STDOUT_FILENO, buffer, read_chars);
+
+	if (write_chars == -1)
+		return (0);
+
+	free(buffer);
+
+	return (write_chars);
 }

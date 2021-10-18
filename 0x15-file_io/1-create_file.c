@@ -1,40 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include "main.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 /**
  * Filename - create_file
  *
- * Description - Function that creates a file
+ * Description - function that creates a file and truncates a string in it
  *
- * Return: Always 0
+ * Return: 1 on success or 0 if error
  */
 
 int create_file(const char *filename, char *text_content)
 {
-	int ID = 0, wr = 0, count = 0;
+	int fd, len;
+	int write_chars;
 
-	if (filename == NULL)
-	{
+	if (!filename)
 		return (-1);
-	}
-	if  (text_content != NULL)
-	{
-		for (count = 0; text_content[count] != '\0'; count++)
-		{}
-	}
-	ID = open(filename, 0_CREAT | 0_TRUNC | 0_WRONLY, 0600);
-	if (ID == -1)
-	{
+
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+
+	if (fd < 0)
 		return (-1);
-	}
-	wr = write(ID, text_content, count);
-	if (wr == -1)
+
+	if (text_content && text_content[0] != '\0')
 	{
-		return (-1);
+		for (len = 0; text_content[len]; len++)
+			;
+		write_chars = write(fd, text_content, len);
+		close(fd);
+		if (write_chars < 0 || write_chars != len)
+			return (-1);
 	}
-	close(ID);
+	close(fd);
 	return (1);
 }
