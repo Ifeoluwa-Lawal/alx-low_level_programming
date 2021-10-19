@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 /**
- * Filename - create_file
- *
- * Description - function that creates a file and truncates a string in it
+ * createfile - Function that creates a file and truncates a string in it
+ * @filename: name of file to be read
+ * @text_content: str to be truncated into the file
  *
  * Return: 1 on success or 0 if error
  */
