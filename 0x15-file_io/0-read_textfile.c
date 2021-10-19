@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 /**
- * Filename - read_textfile
- *
- * Description - function that reads from a file and prints to std output
+ * read_textfile - read a text to file and prints it to standard output
+ * @filename: name of file to be read
+ * @letters: number of chars to be read and printed
  *
  * Return: the number of chars printed or 0 if error
  */
