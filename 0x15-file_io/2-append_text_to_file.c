@@ -6,9 +6,11 @@
 #include <stdlib.h>
 
 /**
- * Filename - append_text_to_file
+ * append_text_to_file - function that creates and file and appends a string
  *
- * Description - function that creates a file and appends a string
+ * @filename: name of file to be read
+ *
+ * @text_content: str to be appended into the file
  *
  * Return: 1 on success or -1 if error
  */
